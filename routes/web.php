@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/one-to-many', function () {
     $user = User::factory()->create();
 
     $randomPhone = rand(100, 999) . '-' . rand(100, 999) . '-' . rand(100, 999);
@@ -22,4 +27,22 @@ Route::get('/', function () {
     $user->phone()->create([
         'phone' => $randomPhone
     ]);
+});
+
+
+Route::get('/one-to-many', function () {
+
+    $user = User::factory()->create();
+
+    $user->posts()->create([
+        'title' => 'Title here',
+        'body' => 'Body here',
+    ]);
+
+    $user->posts->first()->title = 'New title';
+    $user->posts->first()->body = 'New better body';
+
+    $user->push();
+
+    return $user->posts;
 });
