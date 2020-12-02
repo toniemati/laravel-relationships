@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,10 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    App::setlocale('es');
+
     return view('welcome');
 });
 
-Route::get('/one-to-many', function () {
+Route::get('/oto', function () {
     $user = User::factory()->create();
 
     $randomPhone = rand(100, 999) . '-' . rand(100, 999) . '-' . rand(100, 999);
@@ -30,7 +32,7 @@ Route::get('/one-to-many', function () {
 });
 
 
-Route::get('/one-to-many', function () {
+Route::get('/otm', function () {
 
     $user = User::factory()->create();
 
@@ -45,4 +47,19 @@ Route::get('/one-to-many', function () {
     $user->push();
 
     return $user->posts;
+});
+
+Route::get('/mtm', function () {
+    //* sync()
+    //* syncWithoutDetaching()
+
+    $user = User::first();
+
+    // $user->roles()->sync([
+    //     1 => [
+    //         'name' => 'Victor'
+    //     ]
+    // ]);
+
+    dd($user->roles->first()->pivot->name);
 });
